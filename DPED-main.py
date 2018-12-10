@@ -13,9 +13,6 @@ from DPED import *
 from utils import *
 from ops import *
 
-get_ipython().run_line_magic('reload_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
-
 config = edict()
 # training parameters
 config.batch_size = 50
@@ -34,15 +31,15 @@ config.w_tv = 1/400 # total variation (originally 400)
 
 # directories
 config.dataset_name = "iphone"
-config.train_path_phone = os.path.join("/home/johnyi/Downloads/dped",str(config.dataset_name),"training_data",str(config.dataset_name),"*.jpg")
-config.train_path_dslr = os.path.join("/home/johnyi/Downloads/dped",str(config.dataset_name),"training_data/canon/*.jpg")
-config.test_path_phone_patch = os.path.join("/home/johnyi/Downloads/dped",str(config.dataset_name),"test_data/patches",str(config.dataset_name),"*.jpg")
-config.test_path_dslr_patch = os.path.join("/home/johnyi/Downloads/dped",str(config.dataset_name),"test_data/patches/canon/*.jpg")
-config.test_path_phone_image = os.path.join("/home/johnyi/deeplearning/research/SISR_Datasets/test/DPED/sample_images/original_images",str(config.dataset_name),"*.jpg")
-config.test_path_dslr_image = os.path.join("/home/johnyi/deeplearning/research/SISR_Datasets/test/DPED/sample_images/original_images/canon/*.jpg")
+config.train_path_phone = os.path.join("../../Photo-enhancer/dped",str(config.dataset_name),"training_data",str(config.dataset_name),"*.jpg")
+config.train_path_dslr = os.path.join("../../Photo-enhancer/dped",str(config.dataset_name),"training_data/canon/*.jpg")
+config.test_path_phone_patch = os.path.join("../../Photo-enhancer/dped",str(config.dataset_name),"test_data/patches",str(config.dataset_name),"*.jpg")
+config.test_path_dslr_patch = os.path.join("../../Photo-enhancer/dped",str(config.dataset_name),"test_data/patches/canon/*.jpg")
+config.test_path_phone_image = os.path.join("../../Photo-enhancer/sample_images/original_images",str(config.dataset_name),"*.jpg")
+config.test_path_dslr_image = os.path.join("../../Photo-enhancer/sample_images/original_images/canon/*.jpg")
 config.sample_dir = "samples"
 config.checkpoint_dir = "checkpoint"
-config.vgg_dir = "../vgg_pretrained/imagenet-vgg-verydeep-19.mat"
+config.vgg_dir = "../../Photo-enhancer/vgg_pretrained/imagenet-vgg-verydeep-19.mat"
 config.log_dir = "logs"
 
 if not os.path.exists(config.checkpoint_dir):
