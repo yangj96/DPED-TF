@@ -56,6 +56,7 @@ def get_batch(dataset_phone, dataset_dslr, config, start = 0):
     dslr_batch = np.zeros([config.batch_size, config.patch_size, config.patch_size, config.channels], dtype = 'float32')
 
     for i in range(config.batch_size):
+        print("dataset length: %d" %(len(dataset_phone)))
         index = np.random.randint(len(dataset_phone))
         phone_patch = dataset_phone[index]
         dslr_patch = dataset_dslr[index]

@@ -187,6 +187,7 @@ class DPED(object):
             print(" Discriminator training starts from beginning")
         start = time.time()
         for i in range(0, 10000):
+            print(self.dataset_phone, self.dataset_dslr)
             phone_batch, dslr_batch = get_batch(self.dataset_phone, self.dataset_dslr, self.config)
             _ = self.sess.run(self.D_optimizer , feed_dict={self.phone_patch:phone_batch, self.dslr_patch:dslr_batch})
             
