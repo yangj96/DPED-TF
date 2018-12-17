@@ -63,8 +63,8 @@ dataset_phone, dataset_dslr = load_dataset(config)
 # build DPED model
 tf.reset_default_graph()
 # uncomment this when only trying to test the model
-dataset_phone = []
-dataset_dslr = []
+# dataset_phone = []
+# dataset_dslr = []
 sess = tf.Session()
 model = DPED(sess, config, dataset_phone, dataset_dslr)
 
