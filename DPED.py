@@ -6,6 +6,7 @@ import scipy.misc
 import scipy.io
 import numpy as np
 from glob import glob
+from ssim import MultiScaleSSIM
 from utils import *
 from ops import *
 from vgg19 import *
@@ -273,9 +274,10 @@ class DPED(object):
         self.test_discriminator(200, load = False, mode = "enhanced")
         test_list_phone = sorted(glob(self.config.test_path_phone_patch))
         test_list_dslr = sorted(glob(self.config.test_path_dslr_patch))
-        PSNR_phone_enhanced_list = np.zeros([test_num_patch])
+        # PSNR_phone_enhanced_list = np.zeros([test_num_patch])
         PSNR_dslr_enhanced_list = np.zeros([test_num_patch])
         indexes = []
+        loss_ssim = 0.0
         for i in range(test_num_patch):
             index = np.random.randint(len(test_list_dslr))
             indexes.append(index)
@@ -287,20 +289,23 @@ class DPED(object):
                 imageio.imwrite(("./samples/%s/patch/dslr_%d.png" %(self.config.dataset_name,i)), postprocess(test_patch_dslr))
                 imageio.imwrite(("./samples/%s/patch/enhanced_%d.png" %(self.config.dataset_name,i)), postprocess(test_patch_enhanced[0]))
             #print(enhanced_test_patch.shape)
-            PSNR = calc_PSNR(postprocess(test_patch_enhanced[0]), postprocess(test_patch_phone))
+            #PSNR = calc_PSNR(postprocess(test_patch_enhanced[0]), postprocess(test_patch_phone))
             #print("PSNR: %.3f" %PSNR)
-            PSNR_phone_enhanced_list[i] = PSNR
+            #PSNR_phone_enhanced_list[i] = PSNR
             PSNR = calc_PSNR(postprocess(test_patch_enhanced[0]), postprocess(test_patch_dslr))
             #print("PSNR: %.3f" %PSNR)
             PSNR_dslr_enhanced_list[i] = PSNR
-        print("(runtime: %.3f s) Average test PSNR for %d random test image patches: phone-enhanced %.3f, dslr-enhanced %.3f" %(time.time()-start, test_num_patch, np.mean(PSNR_phone_enhanced_list), np.mean(PSNR_dslr_enhanced_list) ))
+            loss_ssim += MultiScaleSSIM(postprocess(test_patch_enhanced[0]), postprocess(test_patch_dslr)) / test_num_patch
+            
+        print("(runtime: %.3f s) for %d random test image patches, PSNR: %.4f, SSIM: %.4f" %(time.time()-start, test_num_patch, np.mean(PSNR_dslr_enhanced_list), loss_ssim))
         
         # test for images
         start = time.time()
         test_list_phone = sorted(glob(self.config.test_path_phone_image))
-        PSNR_phone_enhanced_list = np.zeros([test_num_image])
+        # PSNR_phone_enhanced_list = np.zeros([test_num_image])
         PSNR_dslr_enhanced_list = np.zeros([test_num_image])
         indexes = []
+        loss_ssim = 0.0
         for i in range(test_num_image):
             #index = np.random.randint(len(test_list_phone))
             index = i
@@ -309,12 +314,12 @@ class DPED(object):
             test_image_enhanced = self.sess.run(self.enhanced_test_unknown , feed_dict={self.phone_test_unknown:[test_image_phone]})
             imageio.imwrite(("./samples/%s/image/phone_%d.png" %(self.config.dataset_name, i)), postprocess(test_image_phone))
             imageio.imwrite(("./samples/%s/image/enhanced_%d.png" %(self.config.dataset_name, i)), postprocess(test_image_enhanced[0]))
-            PSNR = calc_PSNR(postprocess(test_image_enhanced[0]), postprocess(test_image_phone))
+            PSNR = calc_PSNR(postprocess(test_image_enhanced[0]), postprocess(test_image_enhanced))
             #print("PSNR: %.3f" %PSNR)
-            PSNR_phone_enhanced_list[i] = PSNR
+            PSNR_dslr_enhanced_list[i] = PSNR
+            loss_ssim += MultiScaleSSIM(postprocess(test_image_enhanced[0]), postprocess(test_image_enhanced)) / test_num_image
         if test_num_image > 0:
-            print("(runtime: %.3f s) Average test PSNR for %d random full test images: phone-enhanced %.3f" %(time.time()-start, test_num_image, np.mean(PSNR_phone_enhanced_list)))
-        
+            print("(runtime: %.3f s) for %d random full test images" %(time.time()-start, test_num_image))
        
     def build_log_summary(self):  
         self.output_summary = tf.summary.image("output", self.enhanced_test)
