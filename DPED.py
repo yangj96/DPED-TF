@@ -295,7 +295,7 @@ class DPED(object):
             PSNR = calc_PSNR(postprocess(test_patch_enhanced[0]), postprocess(test_patch_dslr))
             #print("PSNR: %.3f" %PSNR)
             PSNR_dslr_enhanced_list[i] = PSNR
-            loss_ssim += MultiScaleSSIM(np.reshape(test_patch_dslr * 255, [self.batch_size, 100, 100, 3]),test_patch_enhanced[0] * 255) / test_num_patch
+            loss_ssim += MultiScaleSSIM(np.reshape(postprocess_for_ssim(test_patch_dslr), [100, 100, 3]), postprocess_for_ssim(test_patch_enhanced[0])) / test_num_patch
             
         print("(runtime: %.3f s) for %d random test image patches, PSNR: %.4f, SSIM: %.4f" %(time.time()-start, test_num_patch, np.mean(PSNR_dslr_enhanced_list), loss_ssim))
         
