@@ -12,7 +12,7 @@ def postprocess(img):
     return np.round(np.clip(img*255 + mean_RGB, 0, 255)).astype(np.uint8)
 
 def postprocess_for_ssim(img):
-    return np.clip(img*255 + mean_RGB, 0, 255))
+    return np.clip(img*255 + mean_RGB, 0, 255)
 
 def lrelu(x , alpha = 0.2):
     return tf.maximum(x , alpha*x)
