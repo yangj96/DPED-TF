@@ -295,7 +295,7 @@ class DPED(object):
             PSNR = calc_PSNR(postprocess(test_patch_enhanced[0]), postprocess(test_patch_dslr))
             #print("PSNR: %.3f" %PSNR)
             PSNR_dslr_enhanced_list[i] = PSNR
-            loss_ssim += MultiScaleSSIM(postprocess(test_patch_enhanced[0]), postprocess(test_patch_dslr)) / test_num_patch
+            loss_ssim += MultiScaleSSIM(np.reshape(test_patch_dslr * 255, [self.batch_size, 100, 100, 3]),test_patch_enhanced[0] * 255) / test_num_patch
             
         print("(runtime: %.3f s) for %d random test image patches, PSNR: %.4f, SSIM: %.4f" %(time.time()-start, test_num_patch, np.mean(PSNR_dslr_enhanced_list), loss_ssim))
         
@@ -314,10 +314,9 @@ class DPED(object):
             test_image_enhanced = self.sess.run(self.enhanced_test_unknown , feed_dict={self.phone_test_unknown:[test_image_phone]})
             imageio.imwrite(("./samples/%s/image/phone_%d.png" %(self.config.dataset_name, i)), postprocess(test_image_phone))
             imageio.imwrite(("./samples/%s/image/enhanced_%d.png" %(self.config.dataset_name, i)), postprocess(test_image_enhanced[0]))
-            PSNR = calc_PSNR(postprocess(test_image_enhanced[0]), postprocess(test_image_enhanced))
+            #PSNR = calc_PSNR(postprocess(test_image_enhanced[0]), postprocess(test_image_enhanced))
             #print("PSNR: %.3f" %PSNR)
-            PSNR_dslr_enhanced_list[i] = PSNR
-            loss_ssim += MultiScaleSSIM(postprocess(test_image_enhanced[0]), postprocess(test_image_enhanced)) / test_num_image
+            #PSNR_dslr_enhanced_list[i] = PSNR
         if test_num_image > 0:
             print("(runtime: %.3f s) for %d random full test images" %(time.time()-start, test_num_image))
        
