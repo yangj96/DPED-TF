@@ -39,7 +39,7 @@ config.test_path_phone_image = os.path.join("/home/sun/Disk/Photo-enhancer/sampl
 config.test_path_dslr_image = os.path.join("/home/sun/Disk/Photo-enhancer/sample_images/original_images/canon/*.jpg")
 config.sample_dir = "samples"
 config.checkpoint_dir = "checkpoint"
-config.vgg_dir = "/home/xiewenbin/DPED/vgg_pretrained/imagenet-vgg-verydeep-19.mat"
+config.vgg_dir = "/home/sun/Disk/Photo-enhancer/vgg_pretrained/imagenet-vgg-verydeep-19.mat"
 config.log_dir = "logs"
 
 if not os.path.exists(config.checkpoint_dir):
