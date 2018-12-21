@@ -12,7 +12,7 @@ def postprocess(img):
     return np.round(np.clip(img*255 + mean_RGB, 0, 255)).astype(np.uint8)
 
 def postprocess_for_ssim(img):
-    img = np.clip(img*255 + mean_RGB, 0, 255).astype(np.float32)
+    img = np.round(np.clip(img*255 + mean_RGB, 0, 255)).astype(np.float32)
     shape = img.shape
     return np.reshape(img, [1, shape[0], shape[1], shape[2]])
 

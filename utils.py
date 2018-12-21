@@ -62,19 +62,19 @@ def get_batch(dataset_phone, dataset_dslr, config, start = 0):
         dslr_patch = dataset_dslr[index]
 
         # randomly flip, rotate patch (assuming that the patch shape is square)
-        if config.augmentation == True:
-            prob = np.random.rand()
-            if prob > 0.5:
-                phone_patch = np.flip(phone_patch, axis = 0)
-                dslr_patch = np.flip(dslr_patch, axis = 0)
-            prob = np.random.rand()
-            if prob > 0.5:
-                phone_patch = np.flip(phone_patch, axis = 1)
-                dslr_patch = np.flip(dslr_patch, axis = 1)
-            prob = np.random.rand()
-            if prob > 0.5:
-                phone_patch = np.rot90(phone_patch)
-                dslr_patch = np.rot90(dslr_patch)
+        # if config.augmentation == True:
+        #     prob = np.random.rand()
+        #     if prob > 0.5:
+        #         phone_patch = np.flip(phone_patch, axis = 0)
+        #         dslr_patch = np.flip(dslr_patch, axis = 0)
+        #     prob = np.random.rand()
+        #     if prob > 0.5:
+        #         phone_patch = np.flip(phone_patch, axis = 1)
+        #         dslr_patch = np.flip(dslr_patch, axis = 1)
+        #     prob = np.random.rand()
+        #     if prob > 0.5:
+        #         phone_patch = np.rot90(phone_patch)
+        #         dslr_patch = np.rot90(dslr_patch)
         #phone_batch[i,:,:,:] = phone_patch
         #dslr_batch[i,:,:,:] = dslr_patch
         phone_batch[i,:,:,:] = preprocess(phone_patch) # pre/post processing function is defined in ops.py
